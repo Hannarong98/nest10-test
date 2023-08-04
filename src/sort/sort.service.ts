@@ -2,13 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { readFileSync, writeFileSync } from 'fs';
 import { parse, unparse } from 'papaparse';
 
-type Data = {
-    id: string;
-    name: string;
-    salary: string;
-    department: string;
-};
-
 const sortFn = (current: string, next: string): number => {
     if (isNaN(Number(current))) {
         return current.toLowerCase().localeCompare(next.toLowerCase());

@@ -18,8 +18,6 @@ const extractFromResults = (
     const secondArray = unsorted[0];
     const secondArrayContent = secondArray[castedSortColumn];
 
-    console.log(firstArray, secondArray);
-
     return { a: firstArrayContent, b: secondArrayContent };
 };
 

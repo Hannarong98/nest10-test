@@ -2,13 +2,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { readFileSync, writeFileSync } from 'fs';
 import { parse, unparse } from 'papaparse';
 
-const sortFn = (current: string, next: string): number => {
-    if (isNaN(Number(current))) {
-        return current.toLowerCase().localeCompare(next.toLowerCase());
-    } else {
-        return Number(current) - Number(next);
-    }
-};
+const sortFn = (current: string, next: string): number =>
+    isNaN(Number(current))
+        ? current.toLowerCase().localeCompare(next.toLowerCase())
+        : Number(current) - Number(next);
 
 @Injectable()
 export class SortService {

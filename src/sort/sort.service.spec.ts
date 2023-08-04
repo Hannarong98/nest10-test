@@ -3,6 +3,7 @@ import { readFileSync, unlinkSync } from 'fs';
 import { parse } from 'papaparse';
 import path, { resolve } from 'path';
 import { SortService } from './sort.service';
+import { BadRequestException } from '@nestjs/common';
 
 const extractFromResults = (
     sorted: any[],
@@ -90,8 +91,14 @@ describe('SortService', () => {
 
         const sortedFileContent = getFileContent(`../../files/sorted.csv`);
 
-        const unsortedParse = parse(unsortedFileContent.toString(), parserConfig).data;
-        const sortedParse = parse(sortedFileContent.toString(), parserConfig).data;
+        const unsortedParse = parse(
+            unsortedFileContent.toString(),
+            parserConfig,
+        ).data;
+        const sortedParse = parse(
+            sortedFileContent.toString(),
+            parserConfig,
+        ).data;
 
         const unsortedContent = unsortedParse.slice(1, unsortedParse.length);
         const sortedContent = sortedParse.slice(1, sortedParse.length);
@@ -116,8 +123,14 @@ describe('SortService', () => {
 
         const sortedFileContent = getFileContent(`../../files/sorted.csv`);
 
-        const unsortedParse = parse(unsortedFileContent.toString(), parserConfig).data;
-        const sortedParse = parse(sortedFileContent.toString(), parserConfig).data;
+        const unsortedParse = parse(
+            unsortedFileContent.toString(),
+            parserConfig,
+        ).data;
+        const sortedParse = parse(
+            sortedFileContent.toString(),
+            parserConfig,
+        ).data;
 
         const unsortedContent = unsortedParse.slice(1, unsortedParse.length);
         const sortedContent = sortedParse.slice(1, sortedParse.length);
@@ -129,5 +142,13 @@ describe('SortService', () => {
 
         expect(results.a).not.toEqual(results.b);
         expect(unsortedFileContent).not.toEqual(sortedFileContent);
+    });
+
+    it('should throw if sort column exceed column count', async () => {
+        const sortColumn = '99';
+
+        await expect(service.sortCsv(sortColumn)).rejects.toThrow(
+            new BadRequestException('sortColumn cannot be higher than 3'),
+        );
     });
 });

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { readFileSync, writeFileSync } from 'fs';
 import { parse, unparse } from 'papaparse';
 
@@ -23,6 +23,12 @@ export class SortService {
         });
 
         const header = result.data[0];
+
+        if (castedSortColumn >= result.data[0].length) {
+            throw new BadRequestException(
+                `sortColumn cannot be higher than ${result.data[0].length - 1}`,
+            );
+        }
 
         const sorted = result.data
             .slice(1, result.data.length)

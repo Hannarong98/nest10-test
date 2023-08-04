@@ -8,12 +8,17 @@ import { BadRequestException } from '@nestjs/common';
 const extractFromResults = (
     sorted: any[],
     unsorted: any[],
+    sortColumn: string,
 ): { a: string; b: string } => {
+    const castedSortColumn = Number(sortColumn);
+
     const firstArray = sorted[0];
-    const firstArrayContent = firstArray[0];
+    const firstArrayContent = firstArray[castedSortColumn];
 
     const secondArray = unsorted[0];
-    const secondArrayContent = secondArray[0];
+    const secondArrayContent = secondArray[castedSortColumn];
+
+    console.log(firstArray, secondArray);
 
     return { a: firstArrayContent, b: secondArrayContent };
 };
@@ -71,7 +76,11 @@ describe('SortService', () => {
         const unsortedContent = unsortedParse.slice(1, unsortedParse.length);
         const sortedContent = sortedParse.slice(1, sortedParse.length);
 
-        const results = extractFromResults(sortedContent, unsortedContent);
+        const results = extractFromResults(
+            sortedContent,
+            unsortedContent,
+            sortColumn,
+        );
 
         expect(results.a).toEqual('1');
         expect(results.b).toEqual('5');
@@ -103,7 +112,11 @@ describe('SortService', () => {
         const unsortedContent = unsortedParse.slice(1, unsortedParse.length);
         const sortedContent = sortedParse.slice(1, sortedParse.length);
 
-        const results = extractFromResults(sortedContent, unsortedContent);
+        const results = extractFromResults(
+            sortedContent,
+            unsortedContent,
+            sortColumn,
+        );
 
         expect(results.a).toEqual('1');
         expect(results.b).toEqual('5');
@@ -113,7 +126,7 @@ describe('SortService', () => {
     });
 
     it('should be sorted tab', async () => {
-        const sortColumn = '0';
+        const sortColumn = '1';
 
         const unsortedFileContent = getFileContent(
             '../../files/tests/to-sort-tab.csv',
@@ -135,10 +148,14 @@ describe('SortService', () => {
         const unsortedContent = unsortedParse.slice(1, unsortedParse.length);
         const sortedContent = sortedParse.slice(1, sortedParse.length);
 
-        const results = extractFromResults(sortedContent, unsortedContent);
+        const results = extractFromResults(
+            sortedContent,
+            unsortedContent,
+            sortColumn,
+        );
 
-        expect(results.a).toEqual('1');
-        expect(results.b).toEqual('5');
+        expect(results.a).toEqual('Andrew');
+        expect(results.b).toEqual('Tan');
 
         expect(results.a).not.toEqual(results.b);
         expect(unsortedFileContent).not.toEqual(sortedFileContent);

@@ -33,8 +33,6 @@ export class SortController {
     ) {
         await this.sortService.sortCsv(sortColumn);
 
-        return new StreamableFile(createReadStream(
-            join(process.cwd(), `files/sorted.csv`),
-        ););
+        return new StreamableFile(createReadStream(join(process.cwd(), `files/sorted.csv`)));
     }
 }

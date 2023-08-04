@@ -168,4 +168,12 @@ describe('SortService', () => {
             new BadRequestException('sortColumn cannot be higher than 3'),
         );
     });
+
+    it('should throw if sort column is not a number string', async () => {
+        const sortColumn = 'sz';
+
+        await expect(service.sortCsv(sortColumn)).rejects.toThrow(
+            new BadRequestException('sortColumn must be a number string'),
+        );
+    });
 });

@@ -21,6 +21,10 @@ export class SortService {
 
         const header = result.data[0];
 
+        if (isNaN(Number(sortColumn))) {
+            throw new BadRequestException('sortColumn must be a number string');
+        }
+
         if (castedSortColumn >= result.data[0].length) {
             throw new BadRequestException(
                 `sortColumn cannot be higher than ${result.data[0].length - 1}`,
